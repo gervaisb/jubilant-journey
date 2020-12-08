@@ -1,40 +1,41 @@
 package org.example;
 
-import java.math.BigDecimal;
-import java.util.Currency;
+import org.example.domain.ArticleId;
+import org.example.domain.Price;
+import org.example.domain.Quantity;
 
 class Item {
-    private String article;
-    private BigDecimal price;
-    private int quantity;
+    private ArticleId articleId;
+    private Price unitPrice;
+    private Quantity quantity;
 
-    public Item(String article, BigDecimal price, int quantity) {
-        this.article = article;
-        this.price = price;
+    public Item(ArticleId articleId, Price unitPrice, Quantity quantity) {
+        this.articleId = articleId;
+        this.unitPrice = unitPrice;
         this.quantity = quantity;
     }
 
-    public String getArticle() {
-        return article;
+    public ArticleId getArticleId() {
+        return articleId;
     }
 
-    public void setArticle(String article) {
-        this.article = article;
+    public void setArticleId(ArticleId articleId) {
+        this.articleId = articleId;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public Price getUnitPrice() {
+        return unitPrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setUnitPrice(Price unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
-    public int getQuantity() {
+    public Quantity getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Quantity quantity) {
         this.quantity = quantity;
     }
 }

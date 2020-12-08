@@ -1,38 +1,41 @@
 package org.example;
 
+import org.example.domain.ArticleId;
+import org.example.domain.Price;
+import org.example.domain.Quantity;
+
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ShoppingCartService {
 
-    private final List<Item> items = new ArrayList<>();
 
-    public void add(String article, BigDecimal price, int quantity) {
-        boolean found = false;
-        for (Item item : items) {
-            if ( article.equals(item.getArticle()) ) {
-                item.setQuantity(item.getQuantity()+quantity);
-                found = true;
-            }
-        }
-        if ( !found ) {
-            items.add(new Item(article, price, quantity));
+
+    private Map<ArticleId, Item> items = new HashMap<>();
+
+    public void add(ArticleId articleId, Price price, Quantity quantity) {
+        if ( items.containsKey(articleId) ) {
+            items.computeIfPresent(articleId, (a, item) -> {
+                item.setQuantity(new Quantity(item.getQuantity().getValue()+quantity.getValue()));
+                return item;
+            });
+        } else {
+            items.put(articleId, new Item(articleId, price, quantity));
         }
     }
 
-    public BigDecimal getTotal() {
+    public Price getTotal() {
         BigDecimal total = BigDecimal.ZERO;
-        for (Item item : items) {
-            BigDecimal unitPrice = item.getPrice();
-            BigDecimal quantity = BigDecimal.valueOf(item.getQuantity());
-            total = total.add(unitPrice.multiply(quantity));
+        for (Item item : items.values()) {
+            Price unitPrice = item.getUnitPrice();
+            BigDecimal quantity = BigDecimal.valueOf(item.getQuantity().getValue());
+            total = total.add(unitPrice.getAmount().multiply(quantity));
         }
-        return total;
+        return new Price(total, Currency.getInstance("EUR"));
     }
 
     public List<Item> getItems() {
-        return items;
+        return new ArrayList<>(items.values());
     }
 }
 
