@@ -6,18 +6,25 @@ import java.util.Objects;
  * An always positive integer
  */
 public class Quantity implements Comparable<Quantity> {
-    private final int value;
 
-    public Quantity(int value) {
+    public static Quantity of(int value) {
+        return new Quantity(value);
+    }
+
+    private Quantity(int value) {
         if ( value<0 ) {
             throw new IllegalArgumentException("Quantity must be bigger or equal to 0");
         }
         this.value = value;
     }
 
-    public int getValue() {
-        return value;
+
+    final int value;
+
+    public Quantity plus(Quantity other) {
+        return new Quantity(this.value + other.value);
     }
+
 
     @Override
     public int compareTo(Quantity o) {

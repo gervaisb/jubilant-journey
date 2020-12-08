@@ -8,21 +8,38 @@ public class Price {
     private final BigDecimal amount;
     private final Currency unit;
 
-    public Price(BigDecimal amount, Currency unit) {
+    public static Price euros(int amount) {
+        return euros(BigDecimal.valueOf(amount));
+    }
+
+    public static Price euros(BigDecimal amount) {
+        return of(amount, Currency.getInstance("EUR"));
+    }
+
+    public static Price of(BigDecimal amount, Currency unit) {
+        return new Price(amount, unit);
+    }
+
+    private Price(BigDecimal amount, Currency unit) {
         if ( amount.compareTo(BigDecimal.ZERO)<0 ) {
             throw new IllegalArgumentException("Price amount must be greater or equal to 0");
         }
-
         this.amount = amount;
         this.unit = unit;
     }
 
-    public BigDecimal getAmount() {
-        return amount;
+    public Price multiply(Quantity quantity) {
+        BigDecimal multiplicand = BigDecimal.valueOf(quantity.value);
+        return new Price(this.amount.multiply(multiplicand), this.unit);
     }
 
-    public Currency getUnit() {
-        return unit;
+    public Price plus(Price other) {
+        if ( this.unit.equals(other.unit) ) {
+            BigDecimal sum = this.amount.add(other.amount);
+            return new Price(sum, this.unit);
+        } else {
+            throw new IllegalArgumentException("Cannot add prices of different units");
+        }
     }
 
     @Override
@@ -38,4 +55,5 @@ public class Price {
     public int hashCode() {
         return Objects.hash(amount, unit);
     }
+
 }

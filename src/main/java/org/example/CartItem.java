@@ -4,15 +4,19 @@ import org.example.domain.ArticleId;
 import org.example.domain.Price;
 import org.example.domain.Quantity;
 
-class Item {
+class CartItem {
     private ArticleId articleId;
     private Price unitPrice;
     private Quantity quantity;
 
-    public Item(ArticleId articleId, Price unitPrice, Quantity quantity) {
+    public CartItem(ArticleId articleId, Price unitPrice, Quantity quantity) {
         this.articleId = articleId;
         this.unitPrice = unitPrice;
         this.quantity = quantity;
+    }
+
+    public void add(Quantity more) {
+        this.quantity = this.quantity.plus(more);
     }
 
     public ArticleId getArticleId() {
@@ -23,19 +27,12 @@ class Item {
         this.articleId = articleId;
     }
 
-    public Price getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(Price unitPrice) {
-        this.unitPrice = unitPrice;
+    public Price getSubTotal() {
+        return unitPrice.multiply(quantity);
     }
 
     public Quantity getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Quantity quantity) {
-        this.quantity = quantity;
-    }
 }
