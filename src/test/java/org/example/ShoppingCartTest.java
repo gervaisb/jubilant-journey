@@ -1,24 +1,24 @@
 package org.example;
 
-import org.example.domain.ArticleId;
-import org.example.domain.Price;
-import org.example.domain.Quantity;
+import org.example.domain.*;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class ShoppingCartServiceTest {
+public class ShoppingCartTest {
 
     private final Price tenEuros = Price.euros(10);
     private final Quantity two = Quantity.of(2);
     private final Quantity one = Quantity.of(1);
-    private ShoppingCartService subject;
+    private ShoppingCart subject;
 
     @Before
     public void setup() {
-        subject = new ShoppingCartService();
+        subject = new ShoppingCart(ClientId.next(), Collections.emptyList());
     }
 
 
@@ -28,10 +28,10 @@ public class ShoppingCartServiceTest {
 
         subject.add(articleId, tenEuros, two);
 
-        CartItem found = null;
-        for (CartItem item : subject.getItems()) {
-            if ( articleId.equals(item.getArticleId()) ) {
-                found = item;
+        ShoppingCart.CartItem found = null;
+        for (ShoppingCart.CartItem cartItem : subject.getItemsByArticleId()) {
+            if ( articleId.equals(cartItem.getArticleId()) ) {
+                found = cartItem;
             }
         }
         assertNotNull("Shopping cart must contains item "+articleId, found);
@@ -43,8 +43,8 @@ public class ShoppingCartServiceTest {
         subject.add(articleId, tenEuros, one);
         subject.add(articleId, tenEuros, one);
 
-        CartItem found = null;
-        for (CartItem item : subject.getItems()) {
+        ShoppingCart.CartItem found = null;
+        for (ShoppingCart.CartItem item : subject.getItemsByArticleId()) {
             if ( articleId.equals(item.getArticleId()) ) {
                 found = item;
             }

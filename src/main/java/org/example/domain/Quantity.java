@@ -2,10 +2,7 @@ package org.example.domain;
 
 import java.util.Objects;
 
-/**
- * An always positive integer
- */
-public class Quantity implements Comparable<Quantity> {
+public class Quantity {
 
     public static Quantity of(int value) {
         return new Quantity(value);
@@ -27,11 +24,6 @@ public class Quantity implements Comparable<Quantity> {
 
 
     @Override
-    public int compareTo(Quantity o) {
-        return value-o.value;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -44,8 +36,4 @@ public class Quantity implements Comparable<Quantity> {
         return Objects.hash(value);
     }
 
-    @Override
-    public String toString() {
-        return String.valueOf(value);
-    }
 }
